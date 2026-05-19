@@ -9,29 +9,32 @@ const FREE_MODELS = [
 ];
 
 export async function generateWithAI(prompt: string): Promise<string> {
-  const model = FREE_MODELS[Math.floor(Math.random() * FREE_MODELS.length)];
-
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": "https://type-verse-rho.vercel.app",
-      "X-Title": "TypeVerse",
-    },
-    body: JSON.stringify({
-      model,
-      messages: [{ role: "user", content: prompt }],
-    }),
-  });
-
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`OpenRouter error: ${err}`);
+  // Shuffle models randomly so load is distributed
+  const shuffled = [...FREE_MODELS].sort(() => Math.random() - 0.5);
+  
+  for (const model of shuffled) {
+    try {
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://type-verse-rho.vercel.app",
+          "X-Title": "TypeVerse",
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+      if (!response.ok) continue;
+      const data = await response.json();
+      const content = data?.choices?.[0]?.message?.content;
+      if (!content) continue;
+      return content.trim();
+    } catch {
+      continue;
+    }
   }
-
-  const data = await response.json();
-  const content = data?.choices?.[0]?.message?.content;
-  if (!content) throw new Error('No content returned');
-  return content.trim();
+  throw new Error('All models failed');
 }
