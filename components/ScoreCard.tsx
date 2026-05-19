@@ -111,15 +111,24 @@ export function ScoreCard({ isOpen, onClose, wpm, accuracy, interest }: ScoreCar
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div className="flex gap-2 mt-6">
                 <a 
                   href={tweetUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex-1 bg-[#1DA1F2] hover:bg-[#1a91da] text-white font-bold py-3.5 rounded-xl flex justify-center items-center gap-2 transition-colors cursor-pointer shadow-lg"
+                  className="flex-1 bg-[#1DA1F2] hover:bg-[#1a91da] text-white font-bold py-3.5 rounded-xl flex justify-center items-center gap-2 transition-colors cursor-pointer shadow-lg text-sm"
                 >
-                  <Share2 className="w-5 h-5" /> Tweet
+                  <Share2 className="w-4 h-4" /> Tweet
                 </a>
+                <button 
+                  onClick={() => {
+                    const shareText = `I just typed ${wpm} WPM on TypeVerse! Can you beat me? 🔥 https://type-verse-rho.vercel.app`;
+                    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+                  }}
+                  className="flex-1 bg-[#25D366] hover:bg-[#1ebe57] text-white font-bold py-3.5 rounded-xl flex justify-center items-center gap-2 transition-colors cursor-pointer shadow-lg text-sm"
+                >
+                  WhatsApp
+                </button>
                 <button 
                   onClick={handleCopyImage}
                   disabled={isExporting}

@@ -6,6 +6,8 @@ import { useAuth } from '@/components/Auth/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Zap, Skull, Play, Home, Trophy, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { HarryMascot, House } from '@/components/games/HarryMascot';
+import { VoldemortMascot } from '@/components/games/VoldemortMascot';
 
 export default function SpellDuelPage() {
   const { 
@@ -15,6 +17,7 @@ export default function SpellDuelPage() {
   
   const { user } = useAuth();
   const [sessionSaved, setSessionSaved] = useState(false);
+  const [house] = useState<House>(() => ['gryffindor', 'slytherin', 'hufflepuff', 'ravenclaw'][Math.floor(Math.random() * 4)] as House);
 
   // Focus input hidden element on mobile (optional, but handling keyboard event directly is easier)
   
@@ -191,55 +194,71 @@ export default function SpellDuelPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-black/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-8 text-center"
+            className="absolute inset-0 bg-black/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center p-4 text-center overflow-y-auto"
           >
-            <div className={`p-6 rounded-full mb-6 ${gamePhase === 'victory' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-500'}`}>
-              {gamePhase === 'victory' ? <Trophy className="w-16 h-16" /> : <Skull className="w-16 h-16" />}
-            </div>
-            <h2 className="text-5xl md:text-7xl font-black text-white uppercase tracking-widest mb-4">
-              {gamePhase === 'victory' ? 'The Boy Who Lived' : 'The Dark Lord Wins'}
-            </h2>
-            <p className="text-xl text-gray-400 max-w-md mb-8">
-              {gamePhase === 'victory' 
-                ? "You've successfully repelled Voldemort's attacks and won the duel!" 
-                : "Your typing wasn't fast enough to hold back the dark magic."}
-            </p>
-            
-            <div className="bg-[#12121a] border border-[#1e1e2e] p-6 rounded-2xl w-full max-w-sm mb-8 shadow-xl">
-              <div className="text-gray-500 text-sm font-bold uppercase tracking-widest mb-2">Final Score</div>
-              <div className="text-5xl font-black text-[var(--color-accent)] drop-shadow-sm mb-4">{score}</div>
-              <div className="flex justify-between border-t border-[#1e1e2e] pt-4 mt-2">
-                <div className="text-center w-1/2 border-r border-[#1e1e2e]">
-                  <div className="text-2xl font-bold text-white">{stats.totalCharsTyped}</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-widest">Keystrokes</div>
+            <div className={`flex flex-col md:flex-row items-center justify-center p-8 rounded-3xl my-8 shadow-2xl relative w-full max-w-2xl border-4 ${gamePhase === 'victory' ? 'border-[#7F0909]' : 'border-[#111]'}`}
+                 style={{ background: gamePhase === 'victory' ? 'linear-gradient(135deg, #f4e4bc, #e8d5a3)' : 'linear-gradient(135deg, #1a1a2e, #16213e)' }}>
+              
+              <div className="md:w-1/3 flex justify-center mb-6 md:mb-0">
+                {gamePhase === 'victory' ? <HarryMascot house={house} className="w-40 h-40 drop-shadow-xl" /> : <VoldemortMascot className="w-40 h-40 drop-shadow-xl" />}
+              </div>
+              
+              <div className={`md:w-2/3 flex flex-col items-center md:items-start text-left px-6 ${gamePhase === 'victory' ? 'text-[#3e2723]' : 'text-gray-300'}`}>
+                <h2 className={`text-3xl md:text-5xl font-black uppercase tracking-widest mb-2 ${gamePhase === 'victory' ? 'text-[#3e2723]' : 'text-red-500'}`}>
+                  {gamePhase === 'victory' ? 'The Boy Who Lived' : 'The Dark Lord Wins'}
+                </h2>
+                <p className={`text-lg mb-6 ${gamePhase === 'victory' ? 'text-[#5d4037]' : 'text-gray-400'}`}>
+                  {gamePhase === 'victory' 
+                    ? `You successfully repelled Voldemort's attacks and won the duel for House ${house.charAt(0).toUpperCase() + house.slice(1)}!` 
+                    : "Your typing wasn't fast enough to hold back the dark magic."}
+                </p>
+                
+                <div className={`p-4 rounded-xl w-full mb-6 ${gamePhase === 'victory' ? 'bg-[#d7ccc8]/50 border border-[#bcaaa4]' : 'bg-[#0f3460]/50 border border-[#e94560]'}`}>
+                  <div className="text-sm font-bold uppercase tracking-widest mb-1 opacity-70">Final Score</div>
+                  <div className={`text-4xl font-black mb-2 ${gamePhase === 'victory' ? 'text-[#3e2723]' : 'text-white'}`}>{score}</div>
+                  <div className="flex justify-between border-t border-black/10 pt-2 mt-2">
+                    <div className="text-center w-1/2 border-r border-black/10">
+                      <div className="text-xl font-bold">{stats.totalCharsTyped}</div>
+                      <div className="text-[10px] uppercase tracking-widest opacity-70">Keystrokes</div>
+                    </div>
+                    <div className="text-center w-1/2">
+                      <div className="text-xl font-bold">{stats.errors}</div>
+                      <div className="text-[10px] uppercase tracking-widest opacity-70">Errors</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-center w-1/2">
-                  <div className="text-2xl font-bold text-white">{stats.errors}</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-widest">Errors</div>
+
+                <div className="flex flex-wrap gap-3 w-full">
+                  <button 
+                    onClick={() => {
+                      const shareText = `I scored ${Math.round(score)} WPM in the Harry Potter Spell Duel on TypeVerse! ⚡ House ${house.charAt(0).toUpperCase() + house.slice(1)} represent! Can you beat me? https://type-verse-rho.vercel.app/games/harry-potter`;
+                      window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+                    }}
+                    className="flex-1 bg-[#25D366] hover:bg-[#1ebe57] text-white px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors shadow-lg shadow-[#25D366]/20 whitespace-nowrap"
+                  >
+                    WhatsApp
+                  </button>
+                  <button 
+                    onClick={handleStart}
+                    className={`flex-1 px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg ${gamePhase === 'victory' ? 'bg-[#3e2723] hover:bg-[#2c1c19] text-white' : 'bg-red-600 hover:bg-red-700 text-white shadow-red-600/20'}`}
+                  >
+                    <RefreshCw className="w-4 h-4" /> Again
+                  </button>
+                  <Link 
+                    href="/games"
+                    className={`flex-1 px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer ${gamePhase === 'victory' ? 'bg-[#bcaaa4] hover:bg-[#a1887f] text-[#3e2723]' : 'bg-[#1a1a2e] hover:bg-[#16213e] text-white border border-gray-700'}`}
+                  >
+                    <Home className="w-4 h-4" /> Lobby
+                  </Link>
                 </div>
+                
+                {user && (
+                  <p className={`text-sm font-bold tracking-widest uppercase mt-4 opacity-80 ${gamePhase === 'victory' ? 'text-green-800' : 'text-red-400'}`}>
+                    Score saved to your profile
+                  </p>
+                )}
               </div>
             </div>
-
-            <div className="flex gap-4 w-full max-w-sm">
-              <button 
-                onClick={handleStart}
-                className="flex-1 bg-[var(--color-accent)] hover:bg-[var(--color-accentHover)] text-white px-6 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-[var(--color-accent)]/20"
-              >
-                <RefreshCw className="w-5 h-5" /> Play Again
-              </button>
-              <Link 
-                href="/games"
-                className="flex-1 bg-[#1e1e2e] hover:bg-[#2a2a3a] border border-gray-800 text-white px-6 py-4 rounded-xl font-bold text-sm uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Home className="w-5 h-5" /> Lobby
-              </Link>
-            </div>
-            
-            {user && (
-              <p className="text-green-400 text-sm font-bold tracking-widest uppercase mt-6 opacity-80">
-                Score saved to your profile
-              </p>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
