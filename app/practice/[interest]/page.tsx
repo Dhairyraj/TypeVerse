@@ -31,6 +31,7 @@ export default function InterestPracticePage({
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [sessionSaved, setSessionSaved] = useState(false);
   const [showScoreCard, setShowScoreCard] = useState(false);
+  const [scoreDismissed, setScoreDismissed] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function InterestPracticePage({
     resetWPM();
     setSessionSaved(false);
     setShowScoreCard(false);
+    setScoreDismissed(false);
   }, [resetEngine, resetWPM]);
 
   useEffect(() => {
@@ -108,11 +110,16 @@ export default function InterestPracticePage({
       saveSession();
     }
     
-    if (isComplete && !showScoreCard) {
+    if (isComplete && !scoreDismissed) {
       const timer = setTimeout(() => setShowScoreCard(true), 500);
       return () => clearTimeout(timer);
     }
-  }, [isComplete, user, sessionSaved, wpm, accuracy, elapsed, errors.length, interest, difficulty, mode, showScoreCard]);
+  }, [isComplete, user, sessionSaved, wpm, accuracy, elapsed, errors.length, interest, difficulty, mode, scoreDismissed]);
+
+  const handleCloseScoreCard = () => {
+    setShowScoreCard(false);
+    setScoreDismissed(true);
+  };
 
   const generateNewParagraph = async () => {
     setLoading(true);
@@ -235,7 +242,7 @@ export default function InterestPracticePage({
           
           <ScoreCard 
             isOpen={showScoreCard} 
-            onClose={() => setShowScoreCard(false)} 
+            onClose={handleCloseScoreCard} 
             wpm={wpm} 
             accuracy={accuracy} 
             interest={interest} 
