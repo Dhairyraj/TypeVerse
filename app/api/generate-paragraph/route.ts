@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { generateWithAI } from '@/lib/openrouter';
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { interest, difficulty, mode } = await req.json();
