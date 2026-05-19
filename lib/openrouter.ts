@@ -28,10 +28,22 @@ export async function generateWithAI(prompt: string): Promise<string> {
         }),
       });
       if (!response.ok) continue;
-      const data = await response.json();
+
+      const data = await response.json().catch(() => null);
+      if (!data) continue;
+
       const content = data?.choices?.[0]?.message?.content;
       if (!content) continue;
-      return content.trim();
+
+      // Strip thinking/reasoning tokens some models add
+      const cleaned = content
+        .replace(/<think>[\s\S]*?<\/think>/gi, '')
+        .replace(/^An error o.*/gm, '')
+        .trim();
+
+      if (!cleaned || cleaned.length < 20) continue;
+
+      return cleaned;
     } catch {
       continue;
     }
