@@ -4,15 +4,22 @@ export async function generateWithAI(prompt: string): Promise<string> {
     headers: {
       "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
       "Content-Type": "application/json",
+      "HTTP-Referer": "https://type-verse-rho.vercel.app",
+      "X-Title": "TypeVerse",
     },
     body: JSON.stringify({
-      model: "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      model: "meta-llama/llama-3.3-70b-instruct:free",
       messages: [{ role: "user", content: prompt }],
     }),
   });
-  const data = await response.json();
+
   if (!response.ok) {
-     throw new Error(data.error?.message || "OpenRouter API Error");
+    const err = await response.text();
+    throw new Error(`OpenRouter error: ${err}`);
   }
-  return data.choices[0].message.content;
+
+  const data = await response.json();
+  const content = data?.choices?.[0]?.message?.content;
+  if (!content) throw new Error('No content returned');
+  return content.trim();
 }
