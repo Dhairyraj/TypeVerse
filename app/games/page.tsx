@@ -35,21 +35,24 @@ export default function GamesLobby() {
           </div>
         </Link>
         
-        {/* Future Game Card */}
-        <div className="relative bg-[#0a0a0f] border border-[var(--color-border)] rounded-3xl overflow-hidden flex flex-col opacity-60 grayscale select-none">
-          <div className="h-56 bg-gradient-to-br from-blue-900/30 to-black relative flex items-center justify-center border-b border-[var(--color-border)]">
-            <div className="text-7xl font-black text-blue-500/20">?</div>
+        {/* Spell Duel Card */}
+        <Link href="/games/harry-potter" className="group relative bg-[#0a0a0f] border border-[var(--color-border)] hover:border-yellow-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(250,204,21,0.15)] flex flex-col cursor-pointer">
+          <div className="h-56 bg-gradient-to-br from-purple-900/40 to-black relative flex items-center justify-center overflow-hidden border-b border-[var(--color-border)]">
+            <div className="text-7xl font-black text-yellow-500 drop-shadow-[0_0_25px_rgba(250,204,21,0.4)] group-hover:scale-110 transition-transform duration-700 ease-out">⚡</div>
           </div>
-          <div className="p-8 flex-1 flex flex-col">
-            <h2 className="text-3xl font-bold mb-4">Word Rain</h2>
+          <div className="p-8 flex-1 flex flex-col group-hover:border-yellow-500/30 transition-colors">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold">Spell Duel</h2>
+              <span className="px-4 py-1.5 bg-yellow-500/10 text-yellow-400 text-xs font-black tracking-widest rounded-full border border-yellow-500/20 shadow-inner">NEW</span>
+            </div>
             <p className="text-[var(--color-textMuted)] mb-10 flex-1 leading-relaxed text-lg">
-              Coming in Phase 9. A beautiful, relaxing matrix-style typing experience focused on flawless accuracy.
+              Type spells faster than Voldemort in an epic wand duel. A fast-paced, tug-of-war typing experience.
             </p>
-            <div className="text-gray-500 font-bold uppercase text-sm tracking-widest bg-[var(--color-surface)] inline-block px-4 py-2 rounded-lg w-fit border border-[var(--color-border)]">
-              Coming Soon
+            <div className="flex items-center text-yellow-400 font-bold gap-2 group-hover:gap-4 transition-all uppercase tracking-widest">
+              Play Now <ArrowRight className="w-5 h-5" />
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );
