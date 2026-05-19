@@ -1,4 +1,16 @@
+const FREE_MODELS = [
+  "google/gemma-4-31b-it:free",
+  "deepseek/deepseek-v4-flash:free",
+  "google/gemma-4-26b-a4b-it:free",
+  "openrouter/owl-alpha",
+  "poolside/laguna-m.1:free",
+  "baidu/cobuddy:free",
+  "poolside/laguna-xs.2:free",
+];
+
 export async function generateWithAI(prompt: string): Promise<string> {
+  const model = FREE_MODELS[Math.floor(Math.random() * FREE_MODELS.length)];
+
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -8,7 +20,7 @@ export async function generateWithAI(prompt: string): Promise<string> {
       "X-Title": "TypeVerse",
     },
     body: JSON.stringify({
-      model: "google/gemma-4-26b-a4b-it:free",
+      model,
       messages: [{ role: "user", content: prompt }],
     }),
   });
