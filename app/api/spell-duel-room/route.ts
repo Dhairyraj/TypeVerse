@@ -40,3 +40,29 @@ export async function POST(req: Request) {
     )
   }
 }
+
+export async function PATCH(req: Request) {
+  try {
+    const { roomCode, userId, userName } = await req.json()
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+    const { data, error } = await supabase
+      .from('spell_duel_rooms')
+      .update({
+        player2_id: userId,
+        player2_name: userName,
+        status: 'starting', // changed to 'starting' to keep your existing 3..2..1 countdown logic working!
+      })
+      .eq('room_code', roomCode)
+      .eq('status', 'waiting')
+      .select()
+      .single()
+      
+    if (error) throw error
+    return NextResponse.json({ success: true, room: data })
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
+}

@@ -65,24 +65,18 @@ export function useSpellDuelOnline(userId: string | undefined, userName: string 
       }
       
       // I am player 2
-      const nextSpell = getRandomWord('harry-potter');
-      const { data: updated, error: updateError } = await supabase
-        .from('spell_duel_rooms')
-        .update({
-          player2_id: userId,
-          player2_name: userName,
-          status: 'starting',
-          current_spell: nextSpell
-        })
-        .eq('room_code', code)
-        .select()
-        .single();
-        
-      if (updateError) {
-        setError(updateError.message);
+      const response = await fetch('/api/spell-duel-room', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomCode: code, userId, userName })
+      });
+      const result = await response.json();
+      
+      if (result.error || !response.ok) {
+        setError(result.error || 'Failed to join room');
         return;
       }
-      setRoom(updated as DuelRoom);
+      setRoom(result.room as DuelRoom);
       setIsPlayer1(false);
     }
   }, [fetchRoom, userId, userName]);
