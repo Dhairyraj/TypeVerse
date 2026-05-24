@@ -125,7 +125,7 @@ export default function PotionMasterPage() {
           <div className="h-64 w-6 bg-black border-2 border-gray-800 rounded-full overflow-hidden flex flex-col justify-end shadow-inner relative">
             <div 
               className="w-full bg-gradient-to-t from-red-800 to-red-500 transition-all duration-300 ease-out relative"
-              style={{ height: \`\${anger}%\` }}
+              style={{ height: `${anger}%` }}
             >
               {anger > 80 && (
                 <div className="absolute inset-0 bg-red-400 animate-pulse mix-blend-overlay"></div>
@@ -190,7 +190,7 @@ export default function PotionMasterPage() {
                               color = cauldron.isTargeted ? "text-yellow-400" : "text-white";
                             }
                             return (
-                              <span key={i} className={\`\${color} \${i < cauldron.typedSoFar.length ? 'drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]' : ''}\`}>
+                              <span key={i} className={`${color} ${i < cauldron.typedSoFar.length ? 'drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]' : ''}`}>
                                 {char}
                               </span>
                             );
@@ -205,7 +205,7 @@ export default function PotionMasterPage() {
                         <div 
                           className="h-full transition-all duration-100 linear"
                           style={{ 
-                            width: \`\${(cauldron.timeLeft / cauldron.maxTime) * 100}%\`,
+                            width: `${(cauldron.timeLeft / cauldron.maxTime) * 100}%`,
                             backgroundColor: cauldron.timeLeft < (cauldron.maxTime * 0.3) ? '#ef4444' : cauldron.potionColor 
                           }}
                         />
@@ -232,7 +232,7 @@ export default function PotionMasterPage() {
                           className="absolute inset-0 flex items-center justify-center z-20"
                         >
                           <div className="w-8 h-12 rounded-t-lg rounded-b-xl border-2 border-white/50 backdrop-blur-md flex flex-col justify-end overflow-hidden"
-                               style={{ backgroundColor: 'rgba(255,255,255,0.2)', boxShadow: \`0 0 20px \${cauldron.potionColor}\` }}>
+                               style={{ backgroundColor: 'rgba(255,255,255,0.2)', boxShadow: `0 0 20px ${cauldron.potionColor}` }}>
                             <div className="w-full h-3/4" style={{ backgroundColor: cauldron.potionColor }}></div>
                           </div>
                         </motion.div>
@@ -245,7 +245,7 @@ export default function PotionMasterPage() {
                           {/* Inner potion liquid */}
                           <div 
                             className="w-full h-full rounded-[50%] opacity-80" 
-                            style={{ backgroundColor: cauldron.potionColor, boxShadow: \`inset 0 0 10px rgba(0,0,0,0.8), 0 0 20px \${cauldron.potionColor}\` }}
+                            style={{ backgroundColor: cauldron.potionColor, boxShadow: `inset 0 0 10px rgba(0,0,0,0.8), 0 0 20px ${cauldron.potionColor}` }}
                           ></div>
                         </div>
                         {/* Cauldron Body */}
@@ -307,13 +307,13 @@ export default function PotionMasterPage() {
 
                 <div className="flex flex-wrap gap-3 w-full">
                   <button 
-                    onClick={() => window.open(\`https://wa.me/?text=\${encodeURIComponent(shareText)}\`, '_blank')}
+                    onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank')}
                     className="flex-1 bg-[#25D366] hover:bg-[#1ebe57] text-white px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors shadow-lg shadow-[#25D366]/20 whitespace-nowrap"
                   >
                     WhatsApp
                   </button>
                   <button 
-                    onClick={() => window.open(\`https://twitter.com/intent/tweet?text=\${encodeURIComponent(shareText)}\`, '_blank')}
+                    onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank')}
                     className="flex-1 bg-[#1DA1F2] hover:bg-[#1a91da] text-white px-4 py-3 rounded-lg font-bold text-xs uppercase tracking-widest transition-colors shadow-lg shadow-[#1DA1F2]/20 whitespace-nowrap"
                   >
                     Tweet
