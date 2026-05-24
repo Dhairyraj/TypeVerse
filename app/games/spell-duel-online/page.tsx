@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSpellDuelOnline } from '@/hooks/useSpellDuelOnline';
 import { useAuth } from '@/components/Auth/AuthContext';
@@ -16,6 +16,7 @@ export default function SpellDuelOnlinePage() {
   const [copied, setCopied] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   
   const { room, error: hookError, isPlayer1, countdown, joinRoom, fetchRoom } = useSpellDuelOnline(
     user?.id, 
@@ -34,6 +35,13 @@ export default function SpellDuelOnlinePage() {
       }
     }
   }, [user, room, joinRoom]);
+
+  // Handle hidden input auto-focus after countdown
+  useEffect(() => {
+    if (countdown === null && room?.status === 'playing') {
+      inputRef.current?.focus();
+    }
+  }, [countdown, room?.status]);
 
   // Handle saving score at the end
   useEffect(() => {
@@ -284,8 +292,26 @@ export default function SpellDuelOnlinePage() {
       </div>
 
       {/* Main Duel Area */}
+      {room.status === 'playing' && !room.current_spell && (
+        <div className="flex-1 flex justify-center items-center z-10 w-full max-w-6xl mx-auto relative">
+          <div className="bg-black/60 px-12 py-8 rounded-3xl border border-gray-800 backdrop-blur-md shadow-2xl text-center">
+            <h3 className="text-2xl font-bold text-white mb-2">Loading spell...</h3>
+            <p className="text-gray-400 text-sm">Status: {room.status}, Spell: {room.current_spell}</p>
+          </div>
+        </div>
+      )}
+
       {room.status === 'playing' && room.current_spell && (
         <div className="flex-1 flex flex-col justify-center items-center z-10 w-full max-w-6xl mx-auto relative">
+          
+          <input 
+            ref={inputRef} 
+            type="text" 
+            className="absolute opacity-0 w-px h-px overflow-hidden pointer-events-none" 
+            autoComplete="off" 
+            autoCorrect="off" 
+            spellCheck="false" 
+          />
           
           {/* Wand Setup & Beam */}
           <div className="w-full flex items-center justify-between relative h-40 mb-16">

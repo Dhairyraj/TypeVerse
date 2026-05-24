@@ -109,22 +109,20 @@ export function useSpellDuelOnline(userId: string | undefined, userName: string 
 
   // Countdown effect
   useEffect(() => {
-    if (countdown === null) return;
-    
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (countdown === 0) {
-      setCountdown(null);
-      // Only player 1 updates to 'playing' to avoid race condition
-      if (isP1Ref.current && roomRef.current?.status === 'starting') {
-        supabase.from('spell_duel_rooms')
-          .update({ status: 'playing' })
-          .eq('room_code', roomRef.current.room_code)
-          .then();
-      }
+    if (room?.status === 'playing') {
+      setCountdown(3);
+      const interval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === null || prev <= 1) {
+            clearInterval(interval);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(interval);
     }
-  }, [countdown]);
+  }, [room?.status]);
 
   // Handle typing
   const handleKeyDown = useCallback(async (e: KeyboardEvent) => {
