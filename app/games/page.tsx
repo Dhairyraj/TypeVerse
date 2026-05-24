@@ -71,6 +71,24 @@ export default function GamesLobby() {
             </div>
           </div>
         </Link>
+        {/* Spell Duel Online Card */}
+        <Link href="/games/spell-duel-online" className="group relative bg-[#0a0a0f] border border-[var(--color-border)] hover:border-blue-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(59,130,246,0.15)] flex flex-col cursor-pointer">
+          <div className="h-56 bg-gradient-to-br from-blue-900/40 to-black relative flex items-center justify-center overflow-hidden border-b border-[var(--color-border)]">
+            <div className="text-7xl font-black text-blue-500 drop-shadow-[0_0_25px_rgba(59,130,246,0.4)] group-hover:scale-110 transition-transform duration-700 ease-out">🌐</div>
+          </div>
+          <div className="p-8 flex-1 flex flex-col group-hover:border-blue-500/30 transition-colors">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold">Spell Duel Online</h2>
+              <span className="px-4 py-1.5 bg-blue-500/10 text-blue-400 text-xs font-black tracking-widest rounded-full border border-blue-500/20 shadow-inner">MULTIPLAYER</span>
+            </div>
+            <p className="text-[var(--color-textMuted)] mb-10 flex-1 leading-relaxed text-lg">
+              Challenge a friend to a real-time wand duel. Play against real opponents across the internet!
+            </p>
+            <div className="flex items-center text-blue-400 font-bold gap-2 group-hover:gap-4 transition-all uppercase tracking-widest">
+              Play Now <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   );
