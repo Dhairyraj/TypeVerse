@@ -89,7 +89,7 @@ export default function SpellDuelOnlinePage() {
       }
     } catch (e: any) {
       console.error('Room creation caught error:', e);
-      setError(e.message || String(e));
+      setError(e instanceof Error ? e.message : 'Failed to create room. Please try again.');
     } finally {
       setIsCreating(false);
     }
@@ -112,15 +112,15 @@ export default function SpellDuelOnlinePage() {
 
   if (!user) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-4 w-full bg-[#050b14]">
-        <div className="bg-black/50 p-8 rounded-3xl border border-gray-800 text-center max-w-md w-full">
-          <h1 className="text-3xl font-black mb-4 text-white uppercase tracking-widest">Login Required</h1>
-          <p className="text-gray-400 mb-6">You must be logged in to play multiplayer duels.</p>
-          <button 
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center p-10 bg-[var(--color-surface)] rounded-3xl border border-[var(--color-border)]">
+          <h2 className="text-2xl font-bold text-white mb-4">⚡ Sign in to Duel</h2>
+          <p className="text-[var(--color-textMuted)] mb-6">You need an account to play multiplayer</p>
+          <button
             onClick={() => document.dispatchEvent(new CustomEvent('open-login-modal'))}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-xl font-bold uppercase tracking-widest inline-block transition-colors cursor-pointer"
+            className="bg-[var(--color-accent)] hover:bg-[var(--color-accentHover)] text-white px-8 py-3 rounded-xl font-bold cursor-pointer"
           >
-            Sign In to Play
+            Sign In
           </button>
         </div>
       </div>
