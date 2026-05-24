@@ -53,7 +53,8 @@ export async function PATCH(req: Request) {
       .update({
         player2_id: userId,
         player2_name: userName,
-        status: 'starting', // changed to 'starting' to keep your existing 3..2..1 countdown logic working!
+        status: 'playing',
+        current_spell: 'expelliarmus',
       })
       .eq('room_code', roomCode)
       .eq('status', 'waiting')

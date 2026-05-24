@@ -241,6 +241,10 @@ export default function SpellDuelOnlinePage() {
         <div className="w-1/2 h-full bg-gradient-to-l from-[#3a0a0a] to-[#111827]"></div>
       </div>
 
+      <div className="text-white text-xs absolute bottom-4 left-4 z-50 bg-black/50 p-2 rounded">
+        Status: {room?.status} | Spell: {room?.current_spell} | Countdown: {String(countdown)}
+      </div>
+
       {/* Countdown Overlay */}
       <AnimatePresence>
         {countdown !== null && (
@@ -292,28 +296,20 @@ export default function SpellDuelOnlinePage() {
       </div>
 
       {/* Main Duel Area */}
-      {room.status === 'playing' && !room.current_spell && (
-        <div className="flex-1 flex justify-center items-center z-10 w-full max-w-6xl mx-auto relative">
-          <div className="bg-black/60 px-12 py-8 rounded-3xl border border-gray-800 backdrop-blur-md shadow-2xl text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">Loading spell...</h3>
-            <p className="text-gray-400 text-sm">Status: {room.status}, Spell: {room.current_spell}</p>
-          </div>
-        </div>
-      )}
-
-      {room.status === 'playing' && room.current_spell && (
-        <div className="flex-1 flex flex-col justify-center items-center z-10 w-full max-w-6xl mx-auto relative">
-          
-          <input 
-            ref={inputRef} 
-            type="text" 
-            className="absolute opacity-0 w-px h-px overflow-hidden pointer-events-none" 
-            autoComplete="off" 
-            autoCorrect="off" 
-            spellCheck="false" 
-          />
-          
-          {/* Wand Setup & Beam */}
+      {room.status === 'playing' && (
+        room.current_spell ? (
+          <div className="flex-1 flex flex-col justify-center items-center z-10 w-full max-w-6xl mx-auto relative">
+            
+            <input 
+              ref={inputRef} 
+              type="text" 
+              className="absolute opacity-0 w-px h-px overflow-hidden pointer-events-none" 
+              autoComplete="off" 
+              autoCorrect="off" 
+              spellCheck="false" 
+            />
+            
+            {/* Wand Setup & Beam */}
           <div className="w-full flex items-center justify-between relative h-40 mb-16">
             <div className="w-32 h-4 bg-gradient-to-r from-[#4a3525] to-[#2a1a10] rounded-l-full relative z-20 shadow-2xl">
               <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-300 rounded-full shadow-[0_0_20px_#60a5fa,0_0_40px_#3b82f6]"></div>
@@ -387,6 +383,11 @@ export default function SpellDuelOnlinePage() {
             Type the spell to push the beam!
           </div>
         </div>
+        ) : (
+          <div className="flex-1 flex justify-center items-center z-10 relative">
+            <div className="text-white text-2xl font-bold animate-pulse">Loading spell...</div>
+          </div>
+        )
       )}
 
       {/* Game Over Modal */}
