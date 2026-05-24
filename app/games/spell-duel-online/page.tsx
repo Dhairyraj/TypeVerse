@@ -62,30 +62,36 @@ export default function SpellDuelOnlinePage() {
   const handleCreateRoom = async () => {
     if (!user) return;
     setIsCreating(true);
+    setError(null);
     try {
-      const session = await supabase.auth.getSession();
-      const token = session.data.session?.access_token ?? '';
-
       const response = await fetch('/api/spell-duel-room', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           userId: user.id,
           userName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Wizard'
         })
       });
+      
       const data = await response.json();
+      console.log('API Response:', data);
+      
+      if (!response.ok || data.error) {
+        throw new Error(data.error || 'Failed to create room');
+      }
+      
       if (data.roomCode) {
         await fetchRoom(data.roomCode);
         window.history.replaceState({}, '', `?room=${data.roomCode}`);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      console.error('Room creation caught error:', e);
+      setError(e.message || String(e));
+    } finally {
+      setIsCreating(false);
     }
-    setIsCreating(false);
   };
 
   const handleJoinRoom = () => {
@@ -141,8 +147,9 @@ export default function SpellDuelOnlinePage() {
             <button 
               onClick={handleCreateRoom}
               disabled={isCreating}
-              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-800 hover:from-blue-500 hover:to-indigo-700 text-white px-6 py-4 rounded-xl font-black text-lg uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-800 hover:from-blue-500 hover:to-indigo-700 text-white px-6 py-4 rounded-xl font-black text-lg uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 flex justify-center items-center gap-2 cursor-pointer"
             >
+              {isCreating ? <RefreshCw className="w-5 h-5 animate-spin" /> : null}
               {isCreating ? 'Creating...' : 'Create Room'}
             </button>
             
