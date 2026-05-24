@@ -14,7 +14,7 @@ export default function GamesLobby() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Zombie Game Card */}
         <Link href="/games/zombie" className="group relative bg-[#0a0a0f] border border-[var(--color-border)] hover:border-green-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(34,197,94,0.15)] flex flex-col cursor-pointer">
           <div className="h-56 bg-gradient-to-br from-green-900/30 to-black relative flex items-center justify-center overflow-hidden">
@@ -49,6 +49,24 @@ export default function GamesLobby() {
               Type spells faster than Voldemort in an epic wand duel. A fast-paced, tug-of-war typing experience.
             </p>
             <div className="flex items-center text-yellow-400 font-bold gap-2 group-hover:gap-4 transition-all uppercase tracking-widest">
+              Play Now <ArrowRight className="w-5 h-5" />
+            </div>
+          </div>
+        </Link>
+        {/* Potion Master Card */}
+        <Link href="/games/potion-master" className="group relative bg-[#0a0a0f] border border-[var(--color-border)] hover:border-emerald-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col cursor-pointer">
+          <div className="h-56 bg-gradient-to-br from-emerald-900/40 to-black relative flex items-center justify-center overflow-hidden border-b border-[var(--color-border)]">
+            <div className="text-7xl font-black text-emerald-500 drop-shadow-[0_0_25px_rgba(16,185,129,0.4)] group-hover:scale-110 transition-transform duration-700 ease-out">🧪</div>
+          </div>
+          <div className="p-8 flex-1 flex flex-col group-hover:border-emerald-500/30 transition-colors">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-3xl font-bold">Potion Master</h2>
+              <span className="px-4 py-1.5 bg-emerald-500/10 text-emerald-400 text-xs font-black tracking-widest rounded-full border border-emerald-500/20 shadow-inner">NEW</span>
+            </div>
+            <p className="text-[var(--color-textMuted)] mb-10 flex-1 leading-relaxed text-lg">
+              Brew potions before they explode. A multitasking typing challenge — don't anger Snape!
+            </p>
+            <div className="flex items-center text-emerald-400 font-bold gap-2 group-hover:gap-4 transition-all uppercase tracking-widest">
               Play Now <ArrowRight className="w-5 h-5" />
             </div>
           </div>

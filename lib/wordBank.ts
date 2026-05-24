@@ -6,7 +6,12 @@ export const WORD_BANK: Record<string, string[]> = {
   science: ['atom', 'cell', 'dna', 'moon', 'mars', 'star', 'mass', 'gene', 'core', 'heat', 'test', 'data', 'lab', 'acid', 'base', 'ion'],
   history: ['rome', 'king', 'queen', 'war', 'tomb', 'gold', 'ruin', 'ship', 'flag', 'pope', 'czar', 'inca', 'maya', 'aztec', 'empire'],
   sports: ['ball', 'goal', 'run', 'swim', 'kick', 'pass', 'team', 'race', 'base', 'bat', 'net', 'dunk', 'golf', 'surf', 'bike', 'skate'],
-  mythology: ['zeus', 'odin', 'thor', 'loki', 'ares', 'hera', 'hades', 'myth', 'god', 'titan', 'elf', 'dwarf', 'fairy', 'nymph', 'magic']
+  mythology: ['zeus', 'odin', 'thor', 'loki', 'ares', 'hera', 'hades', 'myth', 'god', 'titan', 'elf', 'dwarf', 'fairy', 'nymph', 'magic'],
+  'potion-master': [
+    'newt', 'frog', 'root', 'herb', 'toad', 'worm', 'slug', 'fern',
+    'bezoar', 'boomslang', 'lacewing', 'aconite', 'sopophorous', 'flobberworm',
+    'bicorn', 'knotgrass', 'fluxweed', 'shrivelfig', 'bitterroot', 'moonstone',
+  ]
 };
 
 export function getRandomWord(interest: string = 'marvel'): string {
