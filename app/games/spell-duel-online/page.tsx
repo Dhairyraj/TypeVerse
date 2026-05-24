@@ -15,8 +15,9 @@ export default function SpellDuelOnlinePage() {
   const [joinCode, setJoinCode] = useState('');
   const [copied, setCopied] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   
-  const { room, error, isPlayer1, countdown, joinRoom, fetchRoom } = useSpellDuelOnline(
+  const { room, error: hookError, isPlayer1, countdown, joinRoom, fetchRoom } = useSpellDuelOnline(
     user?.id, 
     user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Wizard'
   );
@@ -137,9 +138,9 @@ export default function SpellDuelOnlinePage() {
           </h1>
           <p className="text-gray-400 mb-10">Challenge a friend to a real-time wand duel.</p>
 
-          {error && (
+          {(error || hookError) && (
             <div className="bg-red-900/40 border border-red-500 text-red-300 p-3 rounded-lg mb-6 text-sm font-bold">
-              {error}
+              {error || hookError}
             </div>
           )}
 
