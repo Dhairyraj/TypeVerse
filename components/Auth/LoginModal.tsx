@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, AlertCircle, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
@@ -12,6 +12,12 @@ export function LoginModal() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setLoginModalOpen(true);
+    document.addEventListener('open-login-modal', handler);
+    return () => document.removeEventListener('open-login-modal', handler);
+  }, [setLoginModalOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
