@@ -63,11 +63,14 @@ export default function SpellDuelOnlinePage() {
     if (!user) return;
     setIsCreating(true);
     try {
+      const session = await supabase.auth.getSession();
+      const token = session.data.session?.access_token ?? '';
+
       const response = await fetch('/api/spell-duel-room', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': \`Bearer \${(await supabase.auth.getSession()).data.session?.access_token}\`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           userId: user.id,
@@ -77,7 +80,7 @@ export default function SpellDuelOnlinePage() {
       const data = await response.json();
       if (data.roomCode) {
         await fetchRoom(data.roomCode);
-        window.history.replaceState({}, '', \`?room=\${data.roomCode}\`);
+        window.history.replaceState({}, '', `?room=${data.roomCode}`);
       }
     } catch (e) {
       console.error(e);
@@ -88,7 +91,7 @@ export default function SpellDuelOnlinePage() {
   const handleJoinRoom = () => {
     if (joinCode.length === 6) {
       joinRoom(joinCode.toUpperCase());
-      window.history.replaceState({}, '', \`?room=\${joinCode.toUpperCase()}\`);
+      window.history.replaceState({}, '', `?room=${joinCode.toUpperCase()}`);
     }
   };
 
@@ -282,14 +285,14 @@ export default function SpellDuelOnlinePage() {
             <div className="flex-1 h-3 mx-4 relative bg-gray-900 rounded-full overflow-hidden shadow-inner flex">
               <motion.div 
                 className="h-full bg-gradient-to-r from-blue-500 to-blue-300 relative shadow-[0_0_15px_#3b82f6]"
-                animate={{ width: \`\${beamPos}%\` }}
+                animate={{ width: `${beamPos}%` }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               >
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full blur-md opacity-80"></div>
               </motion.div>
               <motion.div 
                 className="h-full bg-gradient-to-l from-red-600 to-red-400 relative shadow-[0_0_15px_#ef4444]"
-                animate={{ width: \`\${100 - beamPos}%\` }}
+                animate={{ width: `${100 - beamPos}%` }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               >
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full blur-md opacity-80"></div>
@@ -297,9 +300,9 @@ export default function SpellDuelOnlinePage() {
 
               <motion.div 
                 className="absolute top-1/2 -translate-y-1/2 -ml-8 w-16 h-16 rounded-full mix-blend-screen"
-                style={{ left: \`\${beamPos}%\` }}
+                style={{ left: `${beamPos}%` }}
                 animate={{ 
-                  left: \`\${beamPos}%\`,
+                  left: `${beamPos}%`,
                   scale: [1, 1.2, 0.9, 1.1, 1],
                   rotate: [0, 90, 180, 270, 360]
                 }}
@@ -328,7 +331,7 @@ export default function SpellDuelOnlinePage() {
                 }
                 
                 return (
-                  <span key={i} className={\`\${colorClass} \${shadowClass} relative\`}>
+                  <span key={i} className={`${colorClass} ${shadowClass} relative`}>
                     {char}
                     {/* Opponent's progress indicator (red underline/shadow) */}
                     {i === oppProgress && (
@@ -383,8 +386,8 @@ export default function SpellDuelOnlinePage() {
             <div className="flex flex-col gap-3">
               <button 
                 onClick={() => {
-                  const shareText = \`I \${room.winner_id === user.id ? 'defeated' : 'was defeated by'} \${oppName} in a Spell Duel on TypeVerse! ⚡ https://type-verse-rho.vercel.app/games/spell-duel-online\`;
-                  window.open(\`https://wa.me/?text=\${encodeURIComponent(shareText)}\`, '_blank');
+                  const shareText = `I ${room.winner_id === user.id ? 'defeated' : 'was defeated by'} ${oppName} in a Spell Duel on TypeVerse! ⚡ https://type-verse-rho.vercel.app/games/spell-duel-online`;
+                  window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
                 }}
                 className="w-full bg-[#25D366] hover:bg-[#1ebe57] text-white px-4 py-4 rounded-xl font-black text-sm uppercase tracking-widest transition-colors shadow-lg"
               >
